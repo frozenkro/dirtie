@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
+    "github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 )
 
 func HandleRequest(ctx context.Context, sqsEvent events.SQSEvent) error {
@@ -29,8 +30,15 @@ func HandleRequest(ctx context.Context, sqsEvent events.SQSEvent) error {
         var dirtAlert models.DirtAlert
         json.Unmarshal([]byte(message.Body), &dirtAlert) 
         
+        av, err := attributevalue.MarshalMap(dirtAlert)
+        if err != nil {
+            log.Printf("Error marshaling item: %v", err)
+            continue
+        }
+
         putArgs := &dynamodb.PutItemInput{
             TableName: aws.String("dirt_alerts"),
+            Item: av,
         }
 
         _, err = client.PutItem(ctx, putArgs)

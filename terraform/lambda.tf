@@ -25,3 +25,11 @@ resource "aws_lambda_function" "postdirtalert_function" {
 
     runtime = "go1.x"
 }
+
+
+# Setup sqs trigger
+resource "aws_lambda_event_source_mapping" "postdirtalert_lambda_trigger" {
+    event_source_arn = aws_sqs_queue.dirt_alert_queue.arn
+    enabled = true
+    function_name = aws_lambda_function.postdirtalert_function.arn
+}
