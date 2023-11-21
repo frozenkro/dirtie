@@ -6,3 +6,5 @@ locals {
 }   
 
 variable "AWS_CLI_PROFILE" {}
+
+variable "MOSQUITTO_INST_KEY_NAME" {}

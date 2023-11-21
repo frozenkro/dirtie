@@ -82,7 +82,3 @@ resource "aws_iam_policy" "dynamodb_lambda" {
 data "aws_iam_policy" "allow_sqs_lambda" {
     name = "AWSLambdaSQSQueueExecutionRole"
 }
-    
-resource "aws_iam_role" "invoke_createdirtalert_sqs_role" {
-  
-}
